@@ -8,26 +8,46 @@
       </form>
     <table>
       <thead>
-        <tr>
-          <th>ID</th>
-          <th>コメント</th>
-          <th>状態</th>
-          <th></th>
-        </tr>
+        <div id="colhead">
+          <tr>
+            <th>ID</th>
+            <th>コメント</th>
+            <th>状態</th>
+            <th></th>
+          </tr>
+        </div>
       </thead>
       <tbody>
-        <tr v-for="(todo, index) in remakeTasklist" :key="index">
-          <td>{{ index }}</td>
-          <td>{{ todo.comment }}</td>
-          <button v-on:click="statusChange(index)">{{ todo.status }}</button>
-          <button v-on:click="deleteTask(index)">削除</button>
-        </tr>
+        <div v-if="judge == 'all'">
+          <tr v-for="(todo, index) in tasklist" :key="index">
+            <td>{{ index }}</td>
+            <td>{{ todo.comment }}</td>
+            <button v-on:click="statusChange(index)">{{ todo.status }}</button>
+            <button v-on:click="deleteTask(index)">削除</button>
+          </tr>
+        </div>
+        <div v-if="judge == 'working'">
+          <tr v-for="(todo, index) in tasklist" :key="index">
+            <td v-if="todo.status == '作業中'">{{ index }}</td>
+            <td v-if="todo.status == '作業中'">{{ todo.comment }}</td>
+            <button v-if="todo.status == '作業中'" v-on:click="statusChange(index)">{{ todo.status }}</button>
+            <button v-if="todo.status == '作業中'" v-on:click="deleteTask(index)">削除</button>
+          </tr>
+        </div>
+        <div v-if="judge == 'done'">
+          <tr v-for="(todo, index) in tasklist" :key="index">
+            <td v-if="todo.status == '完了'">{{ index }}</td>
+            <td v-if="todo.status == '完了'">{{ todo.comment }}</td>
+            <button v-if="todo.status == '完了'" v-on:click="statusChange(index)">{{ todo.status }}</button>
+            <button v-if="todo.status == '完了'" v-on:click="deleteTask(index)">削除</button>
+          </tr>
+        </div>
       </tbody>
     </table>
     <h2>新規タスクの追加</h2>
     <form id="newtask">
-    <input type="text" id="newtask" name="newtask" v-model.trim="newtask" v-on:keyup.enter="addTask">
-    <button v-on:click="addTask">追加</button>
+      <input type="text" id="newtask" name="newtask" v-model.trim="newtask" v-on:keyup.enter="addTask">
+      <button v-on:click="addTask">追加</button>
     </form>
   </div>
 </template>
@@ -42,7 +62,7 @@ export default {
       judge: 'all'
     }
   },
-  computed:{
+  computed: {
     remakeTasklist(){
       if (this.judge === 'working'){
         return this.tasklist.filter(element => element.status === '作業中');
@@ -53,7 +73,7 @@ export default {
       }
     }
   },
-  methods:{
+  methods: {
     addTask(){
       if (this.newtask){
         this.tasklist.push({comment: this.newtask, status: '作業中'});
@@ -61,7 +81,7 @@ export default {
       }
     },
     deleteTask(index){
-      this.tasklist.splice(index,1);
+      this.tasklist.splice(index, 1);
     },
     statusChange(index){
       if (this.tasklist[index].status === '作業中'){
