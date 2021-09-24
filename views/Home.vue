@@ -37,10 +37,10 @@ export default {
   name: 'Home',
   data() {    
     return {
-     newtask: '',
-     tasklist: [],
-     judge: 'all'
-     }
+      newtask: '',
+      tasklist: [],
+      judge: 'all'
+    }
   },
   computed:{
     remakeTasklist(){
@@ -56,8 +56,8 @@ export default {
   methods:{
     addTask(){
       if (this.newtask){
-      this.tasklist.push({comment:this.newtask,status:'作業中'});
-      this.newtask = '';
+        this.tasklist.push({comment: this.newtask, status: '作業中'});
+        this.newtask = '';
       }
     },
     deleteTask(index){
@@ -65,9 +65,9 @@ export default {
     },
     statusChange(index){
       if (this.tasklist[index].status === '作業中'){
-      this.tasklist[index].status = '完了';
+        this.tasklist[index].status = '完了';
       } else { 
-      this.tasklist[index].status = '作業中';
+        this.tasklist[index].status = '作業中';
       }
     }
   }
